@@ -1,0 +1,71 @@
+[Unit]
+Description=My Backend Service (linux-service-lab)
+Documentation=https://github.com/vedant/linux-service-lab
+# After= controls ordering — don't start until network is up.
+# Requires= is intentionally absent here: we don't depend on a DB in this lab.
+# In a real service with a DB dependency you would add:
+#   After=network.target postgresql.service
+#   Requires=postgresql.service
+After=network.target
+
+# Crash loop protection: if the service crashes more than 3 times in 60 seconds,
+# systemd gives up and marks it failed. Forces human investigation.
+StartLimitIntervalSec=60s
+StartLimitBurst=3
+
+[Service]
+Type=simple
+# Run as a dedicated unprivileged user — never run backend services as root.
+# The install script creates this user.
+User=myapp
+Group=myapp
+WorkingDirectory=/opt/myapp
+
+# Binary location — absolute path, never rely on PATH in unit files.
+ExecStart=/opt/myapp/bin/server
+
+# On SIGTERM (systemctl stop / systemctl restart), give the process 15 seconds
+# to finish in-flight requests before systemd sends SIGKILL.
+# Must match the shutdown timeout in the Go server (context.WithTimeout 15s).
+TimeoutStopSec=15
+
+# ExecReload sends SIGHUP — used for config reload without restart.
+# Our Go service doesn't implement SIGHUP reload (it would need a config file),
+# but the hook is here so it's easy to add later.
+ExecReload=/bin/kill -HUP $MAINPID
+
+# Restart on non-zero exit or signal death, but NOT on clean exit (exit 0).
+# This means intentional stops (systemctl stop) don't trigger a restart.
+Restart=on-failure
+
+# Wait 5 seconds before restarting.
+# Without this, a crashing service restarts instantly in a tight loop,
+# hammering the system and filling logs before anyone can diagnose it.
+RestartSec=5s
+
+# Environment — load from file so secrets don't appear in unit file or ps output.
+# The EnvironmentFile takes precedence over Environment= directives.
+EnvironmentFile=/etc/myapp/env
+Environment=APP_SERVICE_NAME=myapp
+
+# Direct both stdout and stderr to journald.
+# This means: structured logs from the app AND panic stack traces are both captured.
+StandardOutput=journal
+StandardError=journal
+
+# Resource limits — prevent a runaway service from taking down the whole machine.
+# Tune these based on actual service requirements.
+LimitNOFILE=65536
+MemoryMax=512M
+CPUQuota=80%
+
+# Security hardening — reduce attack surface.
+# These restrict what the service can do even if compromised.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/log/myapp /opt/myapp/data
+
+[Install]
+# Start when the system reaches normal multi-user (non-GUI) mode.
+WantedBy=multi-user.target

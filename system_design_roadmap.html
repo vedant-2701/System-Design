@@ -1,0 +1,448 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#1D9E75;--accent-light:#E1F5EE;--accent-dark:#085041;--phase-bg:var(--color-background-secondary);--card-bg:var(--color-background-primary);--border:var(--color-border-tertiary);--text:var(--color-text-primary);--muted:var(--color-text-secondary);--hint:var(--color-text-tertiary)}
+body{font-family:var(--font-sans);color:var(--text);font-size:14px;line-height:1.6}
+.roadmap{max-width:680px;margin:0 auto;padding:1rem 0}
+.top-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem}
+.nav-pill{font-size:11px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border);background:var(--card-bg);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
+.nav-pill:hover,.nav-pill.active{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+.search-bar{position:relative;margin-bottom:1.5rem}
+.search-bar input{width:100%;padding:8px 12px 8px 36px;border:0.5px solid var(--border);border-radius:var(--border-radius-md);background:var(--card-bg);color:var(--text);font-size:13px;outline:none}
+.search-bar input:focus{border-color:#1D9E75}
+.search-bar .ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px}
+.phase{border:0.5px solid var(--border);border-radius:var(--border-radius-lg);background:var(--card-bg);margin-bottom:12px;overflow:hidden}
+.phase-header{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;background:var(--phase-bg)}
+.phase-header:hover{background:var(--color-background-tertiary)}
+.phase-num{width:24px;height:24px;border-radius:50%;background:#E1F5EE;color:#0F6E56;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.phase-title{font-size:14px;font-weight:500;flex:1}
+.phase-tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.tag-found{background:#E1F5EE;color:#0F6E56}
+.tag-int{background:#E6F1FB;color:#185FA5}
+.tag-impl{background:#FAEEDA;color:#854F0B}
+.chevron{color:var(--muted);font-size:14px;transition:transform .2s;flex-shrink:0}
+.chevron.open{transform:rotate(180deg)}
+.phase-body{padding:16px;display:none;border-top:0.5px solid var(--border)}
+.phase-body.open{display:block}
+.section{margin-bottom:16px}
+.section:last-child{margin-bottom:0}
+.section-label{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.obj-box{background:var(--phase-bg);border-radius:var(--border-radius-md);padding:10px 12px;font-size:13px;color:var(--text)}
+.why-box{background:#E1F5EE;border-left:2px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 12px;font-size:13px;color:#085041}
+.prereq-list,.topic-list,.project-list,.system-list{list-style:none}
+.prereq-list li{font-size:13px;color:var(--text);padding:3px 0;padding-left:14px;position:relative}
+.prereq-list li::before{content:"→";position:absolute;left:0;color:#1D9E75;font-size:11px;top:4px}
+.topic-block{border:0.5px solid var(--border);border-radius:var(--border-radius-md);margin-bottom:8px;overflow:hidden}
+.topic-header{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;background:var(--phase-bg)}
+.topic-header:hover{background:var(--color-background-tertiary)}
+.topic-name{font-size:13px;font-weight:500;flex:1}
+.topic-body{padding:12px;display:none;border-top:0.5px solid var(--border)}
+.topic-body.open{display:block}
+.topic-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.topic-cell{background:var(--phase-bg);border-radius:var(--border-radius-md);padding:8px 10px}
+.cell-label{font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.cell-val{font-size:12px;color:var(--text);line-height:1.5}
+.subtopic-chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{font-size:11px;padding:3px 8px;border-radius:10px;background:var(--phase-bg);border:0.5px solid var(--border);color:var(--text)}
+.chip.imp{background:#E1F5EE;border-color:#5DCAA5;color:#085041}
+.chip.warn{background:#FAEEDA;border-color:#EF9F27;color:#633806}
+.chip.info{background:#E6F1FB;border-color:#85B7EB;color:#0C447C}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.proj-card{background:var(--phase-bg);border:0.5px solid var(--border);border-radius:var(--border-radius-md);padding:10px 12px}
+.proj-card .proj-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px}
+.proj-card .proj-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.sys-chips{display:flex;flex-wrap:wrap;gap:4px}
+.sys-chip{font-size:11px;padding:3px 8px;border-radius:10px;background:#E6F1FB;border:0.5px solid #85B7EB;color:#0C447C}
+.case-block{border:0.5px solid var(--border);border-radius:var(--border-radius-md);margin-bottom:8px;overflow:hidden}
+.case-header{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;background:var(--phase-bg)}
+.case-name{font-size:13px;font-weight:500;flex:1}
+.case-body{padding:12px;display:none;border-top:0.5px solid var(--border)}
+.case-body.open{display:block}
+.prereq-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.prereq-chip{font-size:11px;padding:3px 8px;border-radius:10px;background:#FAEEDA;border:0.5px solid #FAC775;color:#633806}
+.teaches-chips{display:flex;flex-wrap:wrap;gap:4px}
+.teaches-chip{font-size:11px;padding:3px 8px;border-radius:10px;background:#E1F5EE;border:0.5px solid #5DCAA5;color:#085041}
+.mistake-box{background:#FAECE7;border-left:2px solid #D85A30;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:8px 12px;font-size:12px;color:#711B0A;margin-top:8px}
+.int-badge{font-size:10px;padding:2px 7px;border-radius:10px;background:#E6F1FB;color:#185FA5;font-weight:500}
+.high-badge{background:#FAECE7;color:#993C1D}
+.med-badge{background:#FAEEDA;color:#854F0B}
+.hidden{display:none!important}
+.no-results{text-align:center;padding:2rem;color:var(--muted);font-size:13px}
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">System Design Mastery Roadmap — 14 phases from foundations to production engineering and interview preparation</h2>
+
+<div class="roadmap">
+<div class="search-bar">
+  <i class="ti ti-search ico" aria-hidden="true"></i>
+  <input type="text" id="searchInput" placeholder="Search phases, topics, concepts..." oninput="filterRoadmap(this.value)">
+</div>
+<div class="top-nav" id="topNav"></div>
+<div id="phasesContainer"></div>
+</div>
+
+<script>
+const phases=[
+{num:1,id:"foundations",title:"Phase 1 — Foundations",tags:["Interview","Implementation"],
+obj:"Build the mental model for how computers communicate, process, and execute — the bedrock every system design decision rests on.",
+why:"System design decisions around latency, protocols, concurrency, and reliability are impossible to reason about without OS and network fundamentals. Skipping this creates gaps that surface in every interview and production incident.",
+prereqs:["Basic programming in any language","Ability to read pseudocode","Familiarity with terminal/CLI"],
+topics:[
+{name:"Operating Systems Basics",subtopics:["Processes vs threads","Context switching","System calls","Memory layout: stack vs heap","Virtual memory & paging","File descriptors","Signals","Process scheduling"],impl:"Trace system calls via strace; build a process pool in Python/Go; implement a thread-safe counter",int:"High",mistake:"Conflating process and thread; not knowing cost of context switch"},
+{name:"Concurrency Basics",subtopics:["Mutex, semaphore, spinlock","Deadlock, livelock, starvation","Thread pools","Async/await vs threads vs event loop","Memory visibility & happens-before","Compare-and-swap (CAS)","Amdahl's Law"],impl:"Implement producer-consumer; simulate dining philosophers; build a thread-safe queue",int:"High",mistake:"Assuming async = parallel; ignoring GIL in Python"},
+{name:"Linux Basics",subtopics:["File system structure","Permissions & ownership","Process management (ps, kill, top)","Networking tools (netstat, ss, tcpdump)","Systemd & services","Shell scripting essentials","cron jobs","Log inspection"],impl:"Write bash scripts for log rotation, process monitoring; set up a service with systemd",int:"Medium",mistake:"Not knowing how to read /proc; unfamiliar with ulimits"},
+{name:"Networking Basics & TCP/IP",subtopics:["OSI model","IP addressing, subnets, CIDR","TCP 3-way handshake","UDP vs TCP","Ports and sockets","NAT, routing","ICMP, ping, traceroute","TCP congestion control","TIME_WAIT state"],impl:"Build a raw TCP server/client in Go or Python; capture packets with Wireshark",int:"High",mistake:"Ignoring TIME_WAIT; not understanding TCP window sizing"},
+{name:"HTTP/HTTPS & TLS/SSL",subtopics:["HTTP/1.1 vs HTTP/2 vs HTTP/3","Request/response lifecycle","Status codes (1xx-5xx)","Headers: auth, caching, content negotiation","Cookies & sessions","TLS handshake","Certificate chain, CA","HSTS","CORS"],impl:"Build an HTTP server from scratch; inspect TLS handshake with openssl s_client",int:"High",mistake:"Not knowing difference between 401 and 403; ignoring Keep-Alive"},
+{name:"DNS",subtopics:["DNS resolution chain","A, AAAA, CNAME, MX, TXT records","TTL and caching","Recursive vs authoritative resolvers","DNS propagation","GeoDNS","DNS-based load balancing","DNSSEC basics"],impl:"Set up a local DNS server; trace DNS resolution with dig +trace",int:"Medium",mistake:"Forgetting TTL impact on failover time"},
+{name:"REST APIs",subtopics:["REST constraints & Richardson maturity","Idempotency of HTTP verbs","Versioning strategies","Pagination: cursor vs offset","HATEOAS","OpenAPI/Swagger","Error response design","HTTP caching headers (ETag, Cache-Control)"],impl:"Design and implement a RESTful CRUD API; add pagination and filtering",int:"High",mistake:"Using POST for idempotent operations; poorly designed error payloads"},
+{name:"gRPC",subtopics:["Protocol Buffers (protobuf)","Service definition (.proto files)","Unary vs streaming RPCs","gRPC vs REST tradeoffs","Interceptors","Load balancing with gRPC","Health checks","gRPC-Gateway"],impl:"Build a gRPC service with both unary and server-streaming RPCs",int:"Medium",mistake:"Not understanding protobuf backward compatibility"},
+{name:"WebSockets",subtopics:["WebSocket handshake (HTTP Upgrade)","Full-duplex communication","Heartbeats/ping-pong","Scaling WebSocket servers","Socket.io vs raw WebSocket","Long polling vs SSE vs WebSocket"],impl:"Build a real-time notification server; implement reconnection logic",int:"Medium",mistake:"Not handling connection drops; not using heartbeats"}
+],
+projects:[
+{name:"Mini HTTP Server",desc:"From scratch in Go/Python, handling routing, headers, keep-alive"},
+{name:"TCP Chat",desc:"Multi-client TCP chat server with thread-per-client model"},
+{name:"DNS Resolver Trace Tool",desc:"CLI that shows full DNS resolution chain for any domain"},
+{name:"Concurrency Lab",desc:"Producer-consumer, dining philosophers, bounded buffer with all classic solutions"}
+],
+systems:["Every system uses these","Nginx","Linux kernel","Chrome networking stack"]
+},
+{num:2,id:"programming",title:"Phase 2 — Programming & OOP",tags:["Interview","Implementation"],
+obj:"Write code that is maintainable, extensible, testable, and production-grade. Internalize design principles before learning patterns.",
+why:"LLD interviews directly test OOP and SOLID. Bad OOP produces unmaintainable codebases that fail at scale. Patterns are useless without principles.",
+prereqs:["Phase 1 complete","Proficiency in at least one OOP language (Java, Python, Go, C++)"],
+topics:[
+{name:"OOP Fundamentals",subtopics:["Encapsulation, abstraction, inheritance, polymorphism","Composition over inheritance","Interface vs abstract class","Method overloading vs overriding","Static vs instance members","Object lifecycle"],impl:"Re-implement Java ArrayList from scratch; build a shape hierarchy using polymorphism",int:"High",mistake:"Overusing inheritance; not preferring composition"},
+{name:"SOLID Principles",subtopics:["Single Responsibility Principle","Open/Closed Principle","Liskov Substitution Principle","Interface Segregation Principle","Dependency Inversion Principle"],impl:"Refactor a God class into SOLID-compliant design; apply Open/Closed to a payment processor",int:"High",mistake:"Treating SOLID as checklist; violating LSP with type-checking"},
+{name:"DRY / KISS / YAGNI",subtopics:["Recognizing duplication vs necessary repetition","Avoiding premature abstraction","Rule of Three for DRY","YAGNI in feature development"],impl:"Audit an existing codebase for violations; refactor without over-engineering",int:"Medium",mistake:"Applying DRY too aggressively and creating wrong abstractions"},
+{name:"Clean Code",subtopics:["Meaningful naming","Small functions / single level of abstraction","Avoiding magic numbers","Comments vs self-documenting code","Guard clauses","Error handling patterns"],impl:"Refactor a 300-line function into clean code using all principles",int:"High",mistake:"Long methods; using comments to explain bad code"},
+{name:"Dependency Injection",subtopics:["Constructor vs setter vs interface injection","DI containers (Spring, Guice)","Manual DI","Service locator anti-pattern","DI and testability"],impl:"Build a service layer with manual DI; write unit tests using mocks",int:"High",mistake:"Treating DI container as magic; creating circular dependencies"},
+{name:"UML",subtopics:["Class diagram","Sequence diagram","Use case diagram","Activity diagram","Component diagram","When to use which"],impl:"Draw class and sequence diagrams before every LLD problem",int:"Medium",mistake:"Overcomplicating diagrams; skipping them entirely in interviews"},
+{name:"Refactoring",subtopics:["Code smells catalog","Extract Method/Class","Replace conditional with polymorphism","Strangler fig pattern","Test coverage before refactoring"],impl:"Apply Martin Fowler's refactoring catalog to a legacy codebase",int:"Medium",mistake:"Refactoring without tests; big bang rewrites"}
+],
+projects:[
+{name:"OOP Design Lab",desc:"Redesign a poorly written codebase applying SOLID, DI, and clean code"},
+{name:"Dependency Injection Container",desc:"Build a mini DI container that resolves constructor dependencies"},
+{name:"Shape Hierarchy",desc:"Polymorphic shape system with area, perimeter, serialization"}
+],
+systems:["Spring Framework","Django","Rails","NestJS"]
+},
+{num:3,id:"lld",title:"Phase 3 — Low-Level Design (LLD)",tags:["Interview","Implementation"],
+obj:"Translate requirements into extensible, thread-safe, testable class-level designs using patterns and architecture principles.",
+why:"LLD rounds eliminate candidates who cannot produce production-quality designs. This is where OOP meets real engineering.",
+prereqs:["Phase 2 complete (SOLID, OOP, DI)","Basic data structures","Concurrency basics"],
+topics:[
+{name:"Design Patterns — Creational",subtopics:["Singleton (thread-safe)","Factory Method","Abstract Factory","Builder","Prototype","Object Pool"],impl:"Implement thread-safe Singleton (double-checked locking); build a DB connection pool",int:"High",mistake:"Using Singleton everywhere; not knowing when Builder > Constructor"},
+{name:"Design Patterns — Structural",subtopics:["Adapter","Bridge","Composite","Decorator","Facade","Flyweight","Proxy (virtual, remote, protection)"],impl:"Build a logging system using Decorator; implement a payment facade",int:"High",mistake:"Confusing Adapter and Facade; overusing Decorator"},
+{name:"Design Patterns — Behavioral",subtopics:["Observer / Event Bus","Strategy","Command","Chain of Responsibility","Template Method","State Machine","Iterator","Visitor","Mediator"],impl:"Build a rule engine using Chain of Responsibility; implement State Machine for order lifecycle",int:"High",mistake:"Not knowing when Observer becomes Mediator; overusing Strategy"},
+{name:"Clean & Hexagonal Architecture",subtopics:["Domain layer isolation","Use case layer","Adapter layer (ports & adapters)","Dependency rule","Inversion of control at architecture level"],impl:"Build a feature module that can swap SQL DB for in-memory without changing business logic",int:"Medium",mistake:"Leaking domain logic into controllers or repositories"},
+{name:"CQRS Basics",subtopics:["Command vs Query separation","Read model vs write model","Event sourcing intro","When CQRS is overkill"],impl:"Implement CQRS for a simple order service",int:"Medium",mistake:"Applying CQRS to simple CRUD; confusing with Event Sourcing"},
+{name:"Domain Modeling",subtopics:["Entities vs Value Objects","Aggregates and Aggregate Root","Repository pattern","Domain events","Bounded context intro","Ubiquitous language"],impl:"Model an e-commerce domain with Cart, Order, Product aggregates",int:"High",mistake:"Anemic domain model; putting logic in services instead of entities"},
+{name:"Thread Safety in LLD",subtopics:["Immutability","Synchronized collections","ReadWriteLock","Concurrent data structures","Atomic variables","Volatile keyword"],impl:"Build a thread-safe LRU cache; implement a rate limiter with atomic counters",int:"High",mistake:"Using Collections.synchronizedList where CopyOnWriteArrayList is better"},
+{name:"Extensibility & Testability",subtopics:["Open/Closed in design","Feature flags at design level","Testable design patterns","Mock-friendly interfaces","Arrange-Act-Assert","Test doubles taxonomy"],impl:"Design a notification system that supports new channel types without modification",int:"High",mistake:"Tight coupling making unit tests require DB or network"}
+],
+projects:[
+{name:"Parking Lot",desc:"Slots, vehicles, pricing strategy, multi-floor — full OOP design"},
+{name:"Elevator System",desc:"Multiple elevators, scheduling algorithms, state machine"},
+{name:"ATM System",desc:"Card auth, transactions, cash dispensing, error states"},
+{name:"Splitwise Clone",desc:"Group expenses, debt simplification, transaction history"},
+{name:"Chess",desc:"Board, pieces, move validation, check/checkmate detection"},
+{name:"Cricbuzz Score Engine",desc:"Live scoring, match state, player stats, commentary"},
+{name:"LRU Cache",desc:"Thread-safe, O(1) get/put, eviction policy"},
+{name:"Rate Limiter",desc:"Token bucket + sliding window, configurable per key"},
+{name:"Job Scheduler",desc:"Priority queue, recurring jobs, execution tracking"},
+{name:"Logging Framework",desc:"Log levels, appenders, formatters, async buffering"}
+],
+systems:["Spring MVC","JUnit","Hibernate ORM","Apache Kafka internals"]
+},
+{num:4,id:"databases",title:"Phase 4 — Databases",tags:["Interview","Implementation"],
+obj:"Master data modeling, query optimization, transaction management, and distributed database concepts required for production systems.",
+why:"Storage layer decisions make or break system scalability. Interviews consistently test DB internals, indexing, and distributed DB tradeoffs.",
+prereqs:["Phase 1 (OS basics, disk I/O)","Phase 3 (domain modeling)","SQL basics"],
+topics:[
+{name:"SQL & Relational Databases",subtopics:["EXPLAIN / query plans","Index types: B-tree, hash, GIN, GiST, covering index","Query optimization","JOIN types and costs","Window functions","Partitioning in PostgreSQL","Connection pooling (PgBouncer)","Normalization (1NF-3NF) vs denormalization"],impl:"Optimize slow queries using EXPLAIN ANALYZE; design a schema with appropriate indexes",int:"High",mistake:"SELECT * in production; no indexes on foreign keys; N+1 queries"},
+{name:"Transactions & ACID",subtopics:["Atomicity, Consistency, Isolation, Durability","Isolation levels: READ UNCOMMITTED → SERIALIZABLE","Dirty read, non-repeatable read, phantom read","Optimistic vs pessimistic locking","MVCC (Multi-Version Concurrency Control)","Savepoints","Deadlock detection"],impl:"Reproduce each isolation anomaly in PostgreSQL; benchmark MVCC under load",int:"High",mistake:"Not knowing which isolation level prevents which anomaly"},
+{name:"NoSQL Databases",subtopics:["Document (MongoDB): data modeling, aggregation pipeline","Key-value (Redis, DynamoDB)","Wide-column (Cassandra, HBase): partition key design","Graph (Neo4j): traversal patterns","Time-series (InfluxDB, TimescaleDB)","Choosing NoSQL vs SQL"],impl:"Model a social feed in Cassandra; build a session store in Redis",int:"High",mistake:"Using MongoDB for everything; not understanding Cassandra's data model"},
+{name:"CAP Theorem & Consistency Models",subtopics:["CAP theorem — CP vs AP systems","PACELC extension","Eventual consistency","Strong consistency","Causal consistency","Read-your-writes","Monotonic reads","Linearizability"],impl:"Demonstrate consistency tradeoffs using DynamoDB consistent reads vs eventual reads",int:"High",mistake:"Treating CAP as binary; not knowing PACELC"},
+{name:"Replication",subtopics:["Leader-follower replication","Multi-leader replication","Leaderless (Dynamo-style) replication","Replication lag","Read replicas","Failover strategies","Semi-synchronous replication","Binlog / WAL streaming"],impl:"Set up PostgreSQL streaming replication; simulate failover",int:"High",mistake:"Ignoring replication lag in read replicas; not handling stale reads"},
+{name:"Sharding & Partitioning",subtopics:["Horizontal vs vertical partitioning","Hash sharding","Range sharding","Directory-based sharding","Consistent hashing","Shard key selection","Cross-shard queries","Resharding complexity"],impl:"Implement consistent hashing ring; model a sharding strategy for a Twitter-like system",int:"High",mistake:"Bad shard key causing hotspots; not planning for resharding"},
+{name:"Distributed Databases",subtopics:["Google Spanner (TrueTime, external consistency)","CockroachDB / YugabyteDB","Cassandra (gossip, consistent hashing, quorum)","DynamoDB (leaderless, vector clocks)","Vitess for MySQL sharding","NewSQL tradeoffs"],impl:"Build a simple key-value store using consistent hashing and quorum reads/writes",int:"High",mistake:"Not knowing internals of at least one distributed DB"},
+{name:"Search Systems",subtopics:["Inverted index","TF-IDF and BM25","Elasticsearch data model","Relevance scoring","Sharding in Elasticsearch","Full-text vs fuzzy search","Search vs DB for reads"],impl:"Build a product search with Elasticsearch; implement autocomplete with edge n-grams",int:"Medium",mistake:"Using LIKE '%query%' in SQL for search"}
+],
+projects:[
+{name:"DB Internals Lab",desc:"Build a key-value store with WAL and compaction (LSM-tree concept)"},
+{name:"Sharding Simulator",desc:"Consistent hashing ring with virtual nodes and rebalancing"},
+{name:"Query Optimizer Practice",desc:"Optimize 10 slow queries in a sample e-commerce schema"},
+{name:"Search Engine",desc:"Inverted index from scratch with TF-IDF scoring"}
+],
+systems:["PostgreSQL","MySQL","Cassandra","DynamoDB","Elasticsearch","Redis","Google Spanner"]
+},
+{num:5,id:"backend",title:"Phase 5 — Backend Engineering",tags:["Implementation","Interview"],
+obj:"Build production-grade backend systems: APIs, auth, caching, background jobs, and service-to-service communication.",
+why:"Backend engineering is the core of most system design interviews. Strong backend fundamentals enable correct scalability decisions.",
+prereqs:["Phase 4 (databases)","Phase 3 (LLD)","REST and gRPC (Phase 1)"],
+topics:[
+{name:"API Design at Scale",subtopics:["Idempotency keys","Pagination: cursor-based for large datasets","Bulk APIs","Partial updates (PATCH semantics)","API versioning strategies","Backward compatibility","Contract testing","OpenAPI spec-first design"],impl:"Design a payment API with idempotency keys; implement cursor pagination",int:"High",mistake:"Breaking API changes without versioning; no idempotency on payment endpoints"},
+{name:"Authentication & Authorization",subtopics:["Session-based auth","JWT (stateless) — signing, expiry, refresh tokens","OAuth 2.0 flows (Authorization Code, PKCE, Client Credentials)","OIDC","RBAC vs ABAC","API keys management","Token revocation strategies","SSO and SAML basics"],impl:"Build auth service with JWT + refresh token rotation; implement OAuth 2.0 PKCE flow",int:"High",mistake:"Storing JWT in localStorage; no token rotation; overly permissive CORS"},
+{name:"Caching Strategies",subtopics:["Cache-aside (lazy loading)","Write-through","Write-behind","Read-through","Cache stampede (thundering herd)","Cache invalidation strategies","TTL design","Distributed cache: Redis Cluster","Local cache vs distributed cache"],impl:"Implement cache-aside with Redis; simulate and fix cache stampede with mutex/locking",int:"High",mistake:"No invalidation strategy; caching mutable data without TTL"},
+{name:"Background Jobs & Queues",subtopics:["Job queue vs message queue","Task queues (Celery, Sidekiq, BullMQ)","Idempotent job design","Retry with exponential backoff","Dead letter queues","Job deduplication","Cron-based vs event-driven jobs","Worker concurrency"],impl:"Build a transactional outbox pattern; implement retry with backoff and DLQ",int:"High",mistake:"Jobs that aren't idempotent; no DLQ; no retry limits"},
+{name:"Observability",subtopics:["Structured logging (JSON logs)","Log levels and sampling","Distributed tracing (OpenTelemetry, Jaeger)","Trace context propagation","Metrics: counters, gauges, histograms, summaries","Prometheus + Grafana","Alerting design","SLI/SLO/SLA definitions","Error budgets"],impl:"Instrument a service with OpenTelemetry; build a dashboard with Prometheus + Grafana",int:"High",mistake:"printf debugging in production; no tracing across services; no SLOs"},
+{name:"Connection Pooling & Resource Management",subtopics:["DB connection pool sizing (Little's Law)","HTTP keep-alive and connection reuse","gRPC connection management","File descriptor limits","Graceful shutdown","Health checks (liveness vs readiness)"],impl:"Tune PgBouncer pool size; implement graceful shutdown with in-flight request draining",int:"Medium",mistake:"Creating new DB connection per request; not handling SIGTERM"},
+{name:"Testing at Scale",subtopics:["Unit, integration, contract, load, chaos testing","Test pyramid","Testcontainers for integration tests","Consumer-driven contract tests (Pact)","Load testing (k6, Locust)","Chaos Engineering basics"],impl:"Write integration tests with Testcontainers; run a k6 load test and identify bottlenecks",int:"Medium",mistake:"No integration tests; load testing in production for the first time"}
+],
+projects:[
+{name:"Auth Service",desc:"JWT + refresh tokens, OAuth PKCE, RBAC with Redis token store"},
+{name:"Async Job System",desc:"Transactional outbox, retry, DLQ, worker concurrency"},
+{name:"Observability Stack",desc:"OpenTelemetry + Jaeger + Prometheus + Grafana on a sample service"}
+],
+systems:["Stripe API design","GitHub OAuth","Netflix Hystrix","Cloudflare Workers"]
+},
+{num:6,id:"distributed",title:"Phase 6 — Distributed Systems",tags:["Interview","Implementation"],
+obj:"Understand how distributed systems fail, how to design for failure, and how to reason about consistency, consensus, and coordination.",
+why:"Every system at scale is distributed. This phase teaches the core primitives used in Kafka, Redis, ZooKeeper, and every major cloud service.",
+prereqs:["Phase 4 (databases, CAP)","Phase 5 (backend, queues)","Networking (Phase 1)"],
+topics:[
+{name:"Message Queues & Event Streaming",subtopics:["Point-to-point vs pub/sub","Kafka: topics, partitions, consumer groups, offsets","Kafka: producer acknowledgments (acks=0,1,all)","Kafka: compaction, retention","RabbitMQ: exchanges (direct, fanout, topic, headers)","Dead letter exchanges","Message ordering guarantees","Exactly-once semantics","Backpressure"],impl:"Build an event-driven order processing pipeline in Kafka; implement retry with DLX in RabbitMQ",int:"High",mistake:"Not understanding Kafka partition ordering; assuming exactly-once without configuration"},
+{name:"Distributed Caching",subtopics:["Redis data structures: string, hash, list, set, sorted set, stream","Redis persistence: RDB vs AOF","Redis Cluster: hash slots","Redis Sentinel","Cache patterns at distributed scale","Consistent hashing for cache sharding","Hot key problem","Cache warmup strategies"],impl:"Implement leaderboard with Redis Sorted Set; build distributed lock with Redisson",int:"High",mistake:"Redis as primary store without persistence; single Redis node in production"},
+{name:"Consistency & Consensus",subtopics:["Two-phase commit (2PC) and its problems","Three-phase commit","Paxos overview","Raft consensus (leader election, log replication)","ZooKeeper (ZAB protocol)","etcd usage patterns","Quorum reads/writes","Vector clocks"],impl:"Implement Raft log replication simulation; use ZooKeeper for distributed config",int:"High",mistake:"Not understanding why 2PC blocks; confusing Paxos and Raft"},
+{name:"Distributed Locks",subtopics:["Redis SETNX + TTL","Redlock algorithm and its controversy","ZooKeeper ephemeral nodes for locks","Database-based locks (SELECT FOR UPDATE)","Fencing tokens","Lock lease renewal"],impl:"Implement distributed lock with fencing tokens; demonstrate Redlock failure mode",int:"High",mistake:"Using Redis lock without fencing tokens; not handling lock expiry during long operations"},
+{name:"Failure Handling Patterns",subtopics:["Retry with exponential backoff + jitter","Circuit breaker pattern (Closed, Open, Half-Open)","Bulkhead pattern","Timeout design","Fallback strategies","Graceful degradation","Health checks and dependency health","Chaos engineering (Chaos Monkey)"],impl:"Implement circuit breaker from scratch; demonstrate bulkhead in a multi-service setup",int:"High",mistake:"Linear retry (thundering herd); no timeout on external calls"},
+{name:"Idempotency & Exactly-Once",subtopics:["Idempotency keys in APIs","At-least-once vs at-most-once vs exactly-once","Deduplication strategies","Transactional outbox pattern","Saga pattern (choreography vs orchestration)","Two-phase commit vs Saga tradeoffs"],impl:"Implement Saga pattern for a payment flow; build transactional outbox with Kafka",int:"High",mistake:"Not making consumers idempotent; conflating exactly-once delivery with processing"},
+{name:"Service Discovery & Coordination",subtopics:["Client-side vs server-side service discovery","Consul, Eureka, etcd","Health-based routing","DNS-based service discovery","Service mesh intro (Istio, Linkerd)","Sidecar proxy pattern"],impl:"Set up Consul service discovery with health checks",int:"Medium",mistake:"Hardcoding service URLs; no health-based eviction"}
+],
+projects:[
+{name:"Event-Driven Order System",desc:"Kafka-backed order pipeline with Saga, DLQ, idempotent consumers"},
+{name:"Distributed Lock Service",desc:"Redis + fencing tokens + lock lease renewal"},
+{name:"Circuit Breaker Library",desc:"State machine implementation with metrics and config"}
+],
+systems:["Apache Kafka","Apache Zookeeper","etcd","Consul","Netflix Resilience4j","AWS SQS/SNS"]
+},
+{num:7,id:"hld",title:"Phase 7 — High-Level Design (HLD)",tags:["Interview","Implementation"],
+obj:"Design complete, production-grade systems end-to-end: requirement analysis, capacity estimation, component selection, and architectural tradeoffs.",
+why:"HLD is the primary interview format at senior+ levels. This phase synthesizes all prior knowledge into system blueprints.",
+prereqs:["All phases 1–6 complete","Understanding of all component tradeoffs"],
+topics:[
+{name:"Requirement Gathering & Estimation",subtopics:["Functional vs non-functional requirements","QPS, storage, bandwidth estimation","Read-heavy vs write-heavy classification","SLA and SLO definition","Back-of-envelope calculations","DAU → QPS conversion","Storage tier planning"],impl:"Practice 15-minute requirement + estimation sessions for 5 different systems",int:"High",mistake:"Jumping to design without requirements; rough estimates that are off by 100x"},
+{name:"Load Balancing",subtopics:["L4 vs L7 load balancing","Algorithms: round robin, least connections, IP hash, weighted","Sticky sessions and their problems","Health checks","Global Server Load Balancing (GSLB)","AWS ALB/NLB","HAProxy vs NGINX"],impl:"Configure NGINX as L7 LB with health checks and weighted routing",int:"High",mistake:"Not considering session affinity; no health checks"},
+{name:"API Gateway & Reverse Proxy",subtopics:["API gateway responsibilities: auth, rate limiting, routing, logging","NGINX vs Kong vs AWS API Gateway","Request transformation","Circuit breaking at gateway level","GraphQL federation gateway","BFF (Backend for Frontend) pattern"],impl:"Set up Kong with rate limiting, JWT auth plugin, and request logging",int:"High",mistake:"Overloading API gateway with business logic"},
+{name:"CDN & Caching Layers",subtopics:["CDN: edge caching, origin shield, cache invalidation","Cache hierarchy: browser → CDN → API cache → DB cache","Cache-Control headers","Vary header","Signed URLs","CDN for dynamic vs static content","Cloudflare vs AWS CloudFront"],impl:"Configure CDN caching with stale-while-revalidate; implement cache invalidation on publish",int:"High",mistake:"Caching user-specific content at CDN; not setting Vary header"},
+{name:"Scalability Patterns",subtopics:["Horizontal vs vertical scaling","Stateless service design","Read replicas for read scaling","CQRS for read/write scale separation","Database federation","Async processing for throughput","Event-driven decoupling","Fan-out patterns"],impl:"Identify and eliminate stateful components in a sample service",int:"High",mistake:"Vertical scaling as first response; stateful services behind LB"},
+{name:"Microservices",subtopics:["Microservices vs monolith — when to decompose","Domain-driven decomposition","Inter-service communication: sync vs async","Service contracts and versioning","Data ownership (each service owns its DB)","Saga for distributed transactions","Strangler fig migration pattern","API gateway in microservices"],impl:"Decompose a monolith into 3 services with event-based communication",int:"High",mistake:"Nanoservices; shared DB between services; distributed monolith"},
+{name:"Rate Limiting",subtopics:["Token bucket algorithm","Leaky bucket algorithm","Fixed window counter","Sliding window log","Sliding window counter (hybrid)","Rate limiting at API gateway vs service layer","Distributed rate limiting with Redis","Rate limiting by user, IP, API key"],impl:"Build all 5 algorithms; implement distributed rate limiter with Redis Lua scripts",int:"High",mistake:"Fixed window allowing burst at window boundary"},
+{name:"Monitoring, Logging & Tracing",subtopics:["Metrics pipeline: collection → aggregation → alerting","Log aggregation: ELK stack, Loki","Distributed tracing: sampling strategies","Dashboards: SLI-driven, not vanity metrics","Alerting: symptom-based vs cause-based","Runbooks","On-call practices","Incident management"],impl:"Build full observability for a 3-service system: metrics, logs, traces, dashboards",int:"High",mistake:"Alert on causes not symptoms; no runbooks; no trace correlation"},
+{name:"Reliability Engineering",subtopics:["High availability patterns","Fault tolerance vs resilience","Multi-AZ deployment","Active-active vs active-passive","Data replication for DR","RTO and RPO","Chaos engineering in production","Graceful degradation features"],impl:"Design a failover scenario and test it with chaos injection",int:"High",mistake:"Not testing failover; RTO/RPO defined but never validated"},
+{name:"Multi-Region Systems",subtopics:["Data sovereignty and compliance","Multi-region replication strategies","Conflict resolution (CRDT, last-write-wins)","Latency-based routing","Global databases (Spanner, CockroachDB)","Traffic shifting and canary across regions","Cost vs latency tradeoffs"],impl:"Design a multi-region architecture for a given SLA; plan data replication strategy",int:"High",mistake:"Multi-region without conflict resolution strategy"}
+],
+projects:[
+{name:"Design a URL Shortener",desc:"Full HLD: write path, read path, analytics, global scale"},
+{name:"Design a Rate Limiter Service",desc:"Distributed, multi-algorithm, Redis-backed API"},
+{name:"Design a Notification System",desc:"Multi-channel, fan-out, priority queues, delivery guarantees"}
+],
+systems:["Twitter","GitHub","Stripe","Cloudflare","AWS Global Infrastructure"]
+},
+{num:8,id:"security",title:"Phase 8 — Security Engineering",tags:["Interview","Implementation"],
+obj:"Design secure systems: authentication, authorization, data protection, and defense against common attack vectors.",
+why:"Security failures are production incidents. Interviews at senior levels include security tradeoffs. Auth design appears in nearly every system design.",
+prereqs:["Phase 5 (auth, backend)","Phase 1 (TLS, HTTP)"],
+topics:[
+{name:"JWT & Session Security",subtopics:["JWT structure: header.payload.signature","HS256 vs RS256 vs ES256","Refresh token rotation","Token revocation (blocklist, short TTL)","JWK endpoint for key distribution","Session fixation, CSRF with cookies","HttpOnly + Secure + SameSite flags"],impl:"Build stateless auth with RS256 JWT and refresh token rotation; implement blocklist",int:"High",mistake:"Storing sensitive data in JWT payload; using HS256 with shared secret in microservices"},
+{name:"OAuth 2.0 & OIDC",subtopics:["Authorization Code + PKCE flow","Client Credentials flow for M2M","Implicit flow (deprecated)","Scopes and consent","ID token vs access token","Token introspection","Auth servers: Keycloak, Auth0, Okta"],impl:"Implement full OAuth 2.0 PKCE flow; set up Keycloak as identity provider",int:"High",mistake:"Using Implicit flow; not validating token audience (aud)"},
+{name:"API Security",subtopics:["HTTPS everywhere + HSTS","Input validation and sanitization","SQL injection prevention","XSS prevention (CSP headers)","CSRF tokens","Rate limiting for security","Secret management (Vault, AWS Secrets Manager)","API key rotation"],impl:"Set up HashiCorp Vault for secret injection; add CSP headers and CSRF protection",int:"High",mistake:"Hardcoded secrets; no input validation; secrets in environment variables"},
+{name:"Encryption",subtopics:["Symmetric: AES-256-GCM","Asymmetric: RSA, ECDH","TLS certificate management","Key rotation","Encryption at rest vs in transit","Envelope encryption (AWS KMS)","Hashing: bcrypt for passwords, SHA-256 for integrity"],impl:"Implement envelope encryption with AWS KMS; set up certificate auto-renewal with Let's Encrypt",int:"Medium",mistake:"MD5/SHA1 for passwords; no key rotation; confusing hashing with encryption"},
+{name:"OWASP Top 10",subtopics:["Injection flaws","Broken authentication","Sensitive data exposure","XXE","Broken access control","Security misconfiguration","XSS","Insecure deserialization","Using components with known vulnerabilities","Insufficient logging"],impl:"Run OWASP ZAP against a sample app; fix all identified vulnerabilities",int:"Medium",mistake:"Not knowing OWASP top 10 at a system design level"}
+],
+projects:[
+{name:"Secure Auth Service",desc:"PKCE OAuth, JWT RS256, Vault secrets, CSP headers, rate limiting"},
+{name:"Security Audit",desc:"Run OWASP ZAP + manual review on a sample API; produce findings report"}
+],
+systems:["Auth0","Okta","HashiCorp Vault","AWS KMS","Cloudflare WAF"]
+},
+{num:9,id:"cloud",title:"Phase 9 — Cloud & Infrastructure",tags:["Implementation"],
+obj:"Understand containerization, orchestration, CI/CD, and cloud-native patterns for deploying and operating production systems.",
+why:"Infrastructure knowledge separates candidates who design systems from those who can ship them. Cloud primitives appear in HLD discussions.",
+prereqs:["Phase 5 (backend)","Linux basics (Phase 1)"],
+topics:[
+{name:"Docker",subtopics:["Container vs VM","Dockerfile best practices: multi-stage, layer caching","Image security: non-root user, minimal base","Docker networking: bridge, host, overlay","Docker Compose for local dev","Container resource limits","Image registry (ECR, Docker Hub)"],impl:"Containerize a multi-service app with proper layer caching and non-root user",int:"Medium",mistake:"Running as root; no .dockerignore; not using multi-stage builds"},
+{name:"Kubernetes Basics",subtopics:["Pod, Deployment, Service, Ingress, ConfigMap, Secret","Rolling update vs blue-green vs canary deployments","HorizontalPodAutoscaler","Resource requests vs limits","Liveness vs readiness vs startup probes","Namespaces","RBAC in Kubernetes","PersistentVolumeClaim"],impl:"Deploy a 3-service app on k8s with HPA, readiness probes, and rolling update",int:"Medium",mistake:"No resource limits; liveness probe kills during startup; using Secrets without encryption at rest"},
+{name:"CI/CD",subtopics:["GitHub Actions / GitLab CI / Jenkins pipelines","Build → test → lint → containerize → deploy pipeline","GitOps (ArgoCD, Flux)","Deployment strategies: blue-green, canary, feature flags","Rollback strategy","Environment promotion (dev → staging → prod)","Secret injection in pipelines"],impl:"Build a full GitHub Actions pipeline from push to production deployment",int:"Medium",mistake:"Deploying to prod without staging; no rollback plan; secrets in pipeline logs"},
+{name:"AWS/GCP/Azure Fundamentals",subtopics:["Compute: EC2/GKE/AKS, serverless (Lambda/Cloud Functions)","Storage: S3/GCS/Blob, RDS, DynamoDB/Firestore","Networking: VPC, subnets, security groups, ALB/NLB","IAM: roles, policies, least privilege","Managed services vs self-hosted tradeoffs","Cost optimization basics","Multi-AZ and multi-region setup"],impl:"Deploy a production-like 3-tier app on AWS with VPC, RDS, Elasticache, and ALB",int:"Medium",mistake:"Over-permissive IAM; no VPC; not using managed services where appropriate"}
+],
+projects:[
+{name:"K8s Deployment Pipeline",desc:"Full CI/CD: GitHub Actions → Docker → K8s with canary rollout and rollback"},
+{name:"AWS 3-Tier App",desc:"VPC, ALB, ECS or EKS, RDS Multi-AZ, Elasticache, CloudWatch"}
+],
+systems:["Netflix infrastructure","Spotify Kubernetes","GitHub Actions","AWS production deployments"]
+},
+{num:10,id:"scalability",title:"Phase 10 — Scalability & Performance Engineering",tags:["Interview","Implementation"],
+obj:"Profile, benchmark, and optimize systems for high throughput, low latency, and efficient resource utilization.",
+why:"Performance problems are career-defining incidents. The ability to identify and fix bottlenecks is a senior engineering skill.",
+prereqs:["All prior phases","Observability (Phase 5, 7)"],
+topics:[
+{name:"Performance Profiling",subtopics:["CPU profiling: flame graphs","Memory profiling: heap dumps, GC pressure","I/O profiling: disk and network bottlenecks","Profiling tools: pprof, async-profiler, py-spy","Database query profiling","Load testing methodology (k6, Gatling)"],impl:"Profile a real service end-to-end; find and fix 3 different types of bottlenecks",int:"Medium",mistake:"Optimizing without measuring; guessing at bottlenecks"},
+{name:"Database Performance",subtopics:["Query plan analysis","Index strategies for complex queries","Connection pool tuning","Read replica routing","Denormalization for read paths","Materialized views","Batching and bulk operations","N+1 detection and fix (Dataloader pattern)"],impl:"Identify and fix N+1 queries; add covering indexes; tune connection pool size",int:"High",mistake:"Adding indexes without EXPLAIN; too many indexes degrading write performance"},
+{name:"Caching & Throughput",subtopics:["Cache hit ratio optimization","Bloom filters for negative caching","Request coalescing","Batching API calls","Async pre-computation","Write amplification vs read amplification tradeoffs"],impl:"Achieve 95% cache hit ratio on a read-heavy API; implement Bloom filter for cache miss reduction",int:"High",mistake:"Cache thrashing; no monitoring of cache hit ratio"},
+{name:"Concurrency & Throughput",subtopics:["Thread pool sizing (Little's Law)","Event loop model (Node.js, Nginx)","Non-blocking I/O patterns","Async processing chains","Back-pressure handling","Lock contention profiling"],impl:"Benchmark thread pool vs async I/O for a CPU-bound vs I/O-bound workload",int:"Medium",mistake:"One-size-fits-all thread pool; blocking in async context"}
+],
+projects:[
+{name:"Performance War Room",desc:"Take a slow service from 50 RPS to 5000 RPS through profiling and optimization"},
+{name:"Caching Layer Design",desc:"Multi-layer cache with Bloom filter, TTL tuning, and hit ratio monitoring"}
+],
+systems:["Cloudflare performance engineering","Netflix performance blog","LinkedIn Kafka optimization"]
+},
+{num:11,id:"reliability",title:"Phase 11 — Reliability & Production Engineering",tags:["Interview","Implementation"],
+obj:"Design, measure, and maintain reliability: SLOs, error budgets, incident management, and disaster recovery.",
+why:"Senior engineers own reliability. SRE practices are increasingly asked in interviews. Production incidents are evaluated on recovery, not just avoidance.",
+prereqs:["Phase 7 (monitoring)","Phase 9 (cloud)","Phase 6 (failure patterns)"],
+topics:[
+{name:"SLI / SLO / SLA",subtopics:["Defining meaningful SLIs: latency p99, availability, error rate","SLO target setting","Error budget calculation","Error budget burn rate alerts","SLA as business contract","Toil measurement","SLO windows: rolling vs calendar"],impl:"Define SLIs and SLOs for 3 services; build error budget burn rate alert",int:"High",mistake:"SLOs set too high (99.999%) without error budget; vanity metrics as SLIs"},
+{name:"Incident Management",subtopics:["On-call rotation design","Incident severity levels","Incident commander role","Runbooks and playbooks","Post-mortems: blameless culture","5 Whys vs fishbone analysis","Action items tracking","GameDay exercises"],impl:"Write runbooks for top 5 failure modes; conduct a GameDay on a staging system",int:"Medium",mistake:"Blameful post-mortems; no runbooks; alert without owner"},
+{name:"Disaster Recovery",subtopics:["RTO (Recovery Time Objective)","RPO (Recovery Point Objective)","Backup strategies: full, incremental, differential","Point-in-time recovery","Multi-region failover","DB replication for DR","DR testing frequency","Runbook for failover procedure"],impl:"Implement DB backup + restore test; simulate region failure and measure RTO",int:"High",mistake:"Never testing DR plan; RTO/RPO defined on paper but not validated"},
+{name:"Chaos Engineering",subtopics:["Principles of chaos engineering","Steady-state hypothesis","Chaos Monkey, Chaos Toolkit","Network partition injection","Latency injection","Resource exhaustion tests","Chaos in production vs staging"],impl:"Run a chaos experiment: kill a random pod in staging and measure system behavior",int:"Medium",mistake:"Chaos in production before staging; no steady-state baseline"}
+],
+projects:[
+{name:"SLO Dashboard",desc:"Error budget burn, SLI trends, alert rules in Grafana"},
+{name:"DR Drill",desc:"Simulate region failure; document RTO/RPO achieved vs target; write post-mortem"}
+],
+systems:["Google SRE book systems","AWS Well-Architected Framework","Netflix Chaos Engineering"]
+},
+{num:12,id:"hld-cases",title:"Phase 12 — HLD Case Studies",tags:["Interview"],
+obj:"Apply all prior knowledge to design complete real-world systems under interview conditions.",
+why:"System design interviews are case-study based. Each case study reinforces different architectural patterns and forces tradeoff reasoning.",
+prereqs:["All phases 1–11 complete"],
+topics:[
+{name:"URL Shortener",subtopics:["Prerequisites: hashing, DB indexing, caching, CDN, rate limiting","Teaches: base-62 encoding, write-heavy short ID generation, read-heavy redirect path, analytics fan-out, hot key problem in cache"],impl:"Design, implement, and load test a URL shortener at 10k RPS",int:"High",mistake:"Not planning for hash collisions; no analytics decoupled from write path"},
+{name:"WhatsApp / Chat System",subtopics:["Prerequisites: WebSocket, message queues, storage, distributed ID generation","Teaches: real-time messaging, message ordering, online presence, E2E encryption design, multi-device sync, read receipts"],impl:"Design message delivery with at-least-once guarantee and deduplication",int:"High",mistake:"Ignoring offline message storage; no ACK mechanism"},
+{name:"Instagram / Photo Sharing",subtopics:["Prerequisites: object storage, CDN, feed generation, follow graph","Teaches: blob storage pipeline, feed generation (push vs pull vs hybrid), notification fan-out, image processing pipeline, geo-distributed reads"],impl:"Design newsfeed generation for both celebrity and normal user",int:"High",mistake:"Push fanout for celebrities; no feed pagination strategy"},
+{name:"YouTube / Video Platform",subtopics:["Prerequisites: blob storage, CDN, transcoding, streaming protocols","Teaches: video upload pipeline, adaptive bitrate streaming (HLS/DASH), transcoding workers, view count accuracy, recommendation system data flow"],impl:"Design the upload-to-playback pipeline end to end",int:"High",mistake:"Serving raw video without CDN; no transcoding queue"},
+{name:"Netflix",subtopics:["Prerequisites: CDN, streaming, recommendation systems, multi-region","Teaches: Open Connect CDN, chaos engineering, A/B testing infrastructure, personalization pipeline, multi-region active-active"],impl:"Design Netflix's content delivery architecture",int:"High",mistake:"Not addressing CDN placement strategy"},
+{name:"Uber / Cab Booking",subtopics:["Prerequisites: geospatial indexing, real-time matching, messaging","Teaches: geohashing / quadtree for driver location, supply-demand matching, surge pricing data flow, trip state machine, GPS stream processing"],impl:"Design the driver location ingestion and matching system",int:"High",mistake:"No geospatial indexing strategy; not separating read/write for location"},
+{name:"Twitter / X",subtopics:["Prerequisites: feed generation, graph DB, caching, messaging","Teaches: timeline fanout, celebrity problem, trending topic computation, social graph traversal, search indexing at write time"],impl:"Design tweet fanout for 100M follower accounts",int:"High",mistake:"Single strategy for all follower counts"},
+{name:"Google Docs",subtopics:["Prerequisites: OT / CRDT, WebSocket, versioning","Teaches: Operational Transformation or CRDT for conflict resolution, cursor presence, version history, permission model"],impl:"Implement basic OT merge for concurrent text edits",int:"Medium",mistake:"Not knowing at least one conflict resolution strategy"},
+{name:"Dropbox / File Storage",subtopics:["Prerequisites: chunking, object storage, sync protocol, delta encoding","Teaches: file chunking and deduplication, delta sync, conflict resolution, offline support, versioning"],impl:"Design chunked file upload with resumable uploads",int:"High",mistake:"Uploading full file on every change"},
+{name:"Payment Gateway",subtopics:["Prerequisites: idempotency, ACID, distributed transactions, security","Teaches: idempotency keys, double-spend prevention, ledger design, PCI DSS constraints, reconciliation, Saga for multi-step payments"],impl:"Design an idempotent payment processing system with double-entry ledger",int:"High",mistake:"No idempotency; no reconciliation; ignoring PCI DSS"},
+{name:"Notification System",subtopics:["Prerequisites: message queues, fan-out, rate limiting, delivery guarantees","Teaches: multi-channel delivery (push, SMS, email), priority queues, user preference service, delivery tracking, retry logic"],impl:"Design multi-channel notification with priority and user preferences",int:"High",mistake:"Single queue for all priorities; no delivery tracking"},
+{name:"Food Delivery (Zomato/DoorDash)",subtopics:["Prerequisites: geospatial, matching, real-time tracking, payments","Teaches: restaurant catalog search, order routing, delivery assignment, real-time ETA, analytics pipeline"],impl:"Design the order-to-delivery tracking system",int:"High",mistake:"Ignoring real-time driver tracking at scale"},
+{name:"E-commerce Platform",subtopics:["Prerequisites: catalog search, inventory, payments, order management","Teaches: inventory management (distributed locks for stock), product catalog search, flash sale design, cart service, order state machine"],impl:"Design flash sale with oversell prevention",int:"High",mistake:"Not handling concurrent inventory decrement; no product search strategy"},
+{name:"Ticket Booking (BookMyShow)",subtopics:["Prerequisites: distributed locks, ACID, seat reservation, payments","Teaches: seat reservation under contention, optimistic vs pessimistic locking for seats, payment timeout and rollback, waitlist"],impl:"Design concurrent seat booking with temporary hold + payment confirmation",int:"High",mistake:"No seat hold mechanism; overselling seats"}
+],
+projects:[],systems:[]
+},
+{num:13,id:"lld-cases",title:"Phase 13 — LLD Practice Systems",tags:["Interview","Implementation"],
+obj:"Produce complete class-level designs for real interview problems: UML, code structure, extensibility, and thread safety.",
+why:"LLD interviews require producing a full design in 45–60 minutes. Practice is the only way to build speed and completeness.",
+prereqs:["Phase 3 (LLD, patterns)","Phase 2 (OOP, SOLID)"],
+topics:[
+{name:"LLD Practice Library",subtopics:[
+"Parking Lot — slot types, pricing strategy, multi-floor, extensible vehicle types",
+"Elevator System — state machine, scheduling algo (SCAN, LOOK), multi-elevator coordination",
+"ATM — auth, dispense, transaction atomicity, error states, audit trail",
+"Splitwise — group expense, debt simplification (graph), transaction history",
+"Chess — board abstraction, piece hierarchy, move validation, check/checkmate, undo",
+"Cricbuzz — match lifecycle, scoring engine, player stats, commentary, real-time updates",
+"Library Management — catalog, borrowing, reservations, late fees, notifications",
+"Food Delivery LLD — restaurant, menu, order lifecycle, delivery assignment",
+"Cab Booking LLD — driver/rider state machine, trip lifecycle, pricing",
+"LRU Cache — O(1) get/put, thread-safe, eviction, serialization",
+"Logging Framework — levels, appenders, formatters, async buffer, log rotation",
+"Rate Limiter — token bucket, sliding window, per-user config, distributed extension",
+"Job Scheduler — cron + one-time, priority queue, retry, cancellation, execution tracking"
+],impl:"For each: draw class diagram first, then implement with unit tests in 60 min max",int:"High",mistake:"Starting with code before class diagram; not making designs extensible; forgetting thread safety"}
+],
+projects:[],systems:[]
+},
+{num:14,id:"interview",title:"Phase 14 — Interview Preparation",tags:["Interview"],
+obj:"Translate knowledge into high-performance interview execution: structured communication, time management, and tradeoff articulation.",
+why:"Technical knowledge is necessary but insufficient. Interviewers evaluate communication, structured thinking, and ability to drive a design.",
+prereqs:["All phases 1–13 complete"],
+topics:[
+{name:"HLD Interview Framework",subtopics:["Step 1: Requirements (functional + NFR, 5 min)","Step 2: Capacity estimation (5 min)","Step 3: High-level design (10 min)","Step 4: Deep dive components (15 min)","Step 5: Bottlenecks + tradeoffs (5 min)","What to say when you don't know","How to push back on unreasonable constraints","When to ask clarifying questions vs proceed"],impl:"Mock 20 HLD interviews using Pramp/Excalidraw; record and self-review",int:"Critical",mistake:"Jumping to solutions; not asking for requirements; drawing without talking"},
+{name:"LLD Interview Framework",subtopics:["Step 1: Clarify requirements and constraints (5 min)","Step 2: Identify core entities and relationships (5 min)","Step 3: Draw class diagram (10 min)","Step 4: Code key classes and methods (20 min)","Step 5: Discuss extensibility + edge cases (5 min)","How to choose patterns without being asked","Thread safety: always address proactively"],impl:"Mock 20 LLD interviews with a partner; time each phase strictly",int:"Critical",mistake:"All talk, no code; skipping class diagram; missing thread safety"},
+{name:"Tradeoff Communication",subtopics:["SQL vs NoSQL — when and why","Sync vs async — decision framework","Push vs pull feed","Monolith vs microservices decision","Consistency vs availability under partition","Strong vs eventual consistency choice","Build vs buy for infrastructure components"],impl:"For each tradeoff, build a 2-minute structured answer: context → options → tradeoffs → recommendation",int:"Critical",mistake:"Giving opinion without reasoning; not acknowledging tradeoffs"},
+{name:"Company-Specific Preparation",subtopics:["FAANG HLD expectations (scope, depth, time pressure)","Startup vs enterprise interview styles","Behavioral + system design combined rounds","Take-home system design exercises","System design review with senior engineers","Blind / Glassdoor problem research"],impl:"Research last 12 months of interview reports for target companies; practice most common problems",int:"High",mistake:"Preparing for wrong problem set; not researching company scale"}
+],
+projects:[
+{name:"Interview War Room",desc:"20 HLD mocks + 20 LLD mocks with structured feedback"},
+{name:"Design Document Portfolio",desc:"5 complete design docs (problem, requirements, design, tradeoffs, alternatives)"}
+],
+systems:[]
+}
+];
+
+function renderChips(arr,cls){return arr.map(a=>`<span class="chip ${cls||''}">${a}</span>`).join('')}
+function renderPhase(p){
+  const topicsHtml=p.topics.map((t,ti)=>`
+    <div class="topic-block">
+      <div class="topic-header" onclick="toggleTopic(this)">
+        <span class="topic-name">${t.name}</span>
+        <span class="int-badge ${t.int==='High'?'high-badge':t.int==='Medium'?'med-badge':''}">${t.int||'Medium'} Int.</span>
+        <i class="ti ti-chevron-down chevron" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div class="topic-row">
+          <div class="topic-cell"><div class="cell-label">Subtopics</div><div class="subtopic-chips">${renderChips(t.subtopics,'imp')}</div></div>
+          <div class="topic-cell"><div class="cell-label">Implementation focus</div><div class="cell-val">${t.impl}</div></div>
+        </div>
+        ${t.mistake?`<div class="mistake-box"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:13px;margin-right:4px"></i><strong>Common mistake:</strong> ${t.mistake}</div>`:''}
+      </div>
+    </div>`).join('');
+  const projHtml=p.projects&&p.projects.length?`<div class="section"><div class="section-label">Mini projects</div><div class="proj-grid">${p.projects.map(pr=>`<div class="proj-card"><div class="proj-name">${pr.name}</div><div class="proj-desc">${pr.desc}</div></div>`).join('')}</div></div>`:'';
+  const sysHtml=p.systems&&p.systems.length?`<div class="section"><div class="section-label">Real-world systems</div><div class="sys-chips">${p.systems.map(s=>`<span class="sys-chip">${s}</span>`).join('')}</div></div>`:'';
+  return`
+    <div class="phase" id="phase-${p.id}">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <span class="phase-num">${p.num}</span>
+        <span class="phase-title">${p.title}</span>
+        <div class="phase-tags">${p.tags.map(t=>`<span class="tag ${t==='Interview'?'tag-int':'tag-impl'}">${t}</span>`).join('')}</div>
+        <i class="ti ti-chevron-down chevron" aria-hidden="true"></i>
+      </div>
+      <div class="phase-body">
+        <div class="section"><div class="section-label">Objective</div><div class="obj-box">${p.obj}</div></div>
+        <div class="section"><div class="section-label">Why it matters</div><div class="why-box">${p.why}</div></div>
+        <div class="section"><div class="section-label">Prerequisites</div><ul class="prereq-list">${p.prereqs.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+        <div class="section"><div class="section-label">Topics</div>${topicsHtml}</div>
+        ${projHtml}${sysHtml}
+      </div>
+    </div>`;
+}
+function togglePhase(el){
+  const body=el.nextElementSibling;
+  const chev=el.querySelector('.chevron');
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+}
+function toggleTopic(el){
+  const body=el.nextElementSibling;
+  const chev=el.querySelector('.chevron');
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+}
+function filterRoadmap(q){
+  q=q.toLowerCase().trim();
+  phases.forEach(p=>{
+    const el=document.getElementById('phase-'+p.id);
+    if(!q){el.classList.remove('hidden');return;}
+    const text=(p.title+p.obj+p.why+p.topics.map(t=>t.name+' '+t.subtopics.join(' ')+' '+t.impl).join(' ')+p.prereqs.join(' ')).toLowerCase();
+    el.classList.toggle('hidden',!text.includes(q));
+  });
+  const nav=document.getElementById('topNav');
+  nav.querySelectorAll('.nav-pill').forEach(pill=>{
+    const id=pill.dataset.id;
+    const el=document.getElementById('phase-'+id);
+    pill.classList.toggle('hidden',el&&el.classList.contains('hidden'));
+  });
+}
+const container=document.getElementById('phasesContainer');
+container.innerHTML=phases.map(renderPhase).join('');
+const nav=document.getElementById('topNav');
+nav.innerHTML=phases.map(p=>`<button class="nav-pill" data-id="${p.id}" onclick="scrollToPhase('${p.id}',this)">${p.num}. ${p.title.split('—')[1]?.trim()||p.title}</button>`).join('');
+function scrollToPhase(id,btn){
+  const el=document.getElementById('phase-'+id);
+  if(!el)return;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  const body=el.querySelector('.phase-body');
+  const chev=el.querySelector('.phase-header .chevron');
+  if(!body.classList.contains('open')){body.classList.add('open');chev.classList.add('open');}
+  nav.querySelectorAll('.nav-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>

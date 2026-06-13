@@ -1,0 +1,139 @@
+# ==============================================================================
+# Git Ignore Configuration for System Design & Implementation Repository
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Operating System Files
+# ------------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.lnk
+*.cab
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ------------------------------------------------------------------------------
+# Java Specific (Compilation, Packages, and VM)
+# ------------------------------------------------------------------------------
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files (ignoring jars in general but keeping implementation/lib)
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# EXCLUDE the reference libraries we want to track in Git
+!implementation/lib/*.jar
+
+# Virtual VM Crash Logs
+hs_err_pid*.log
+replay_pid*.log
+
+# Standard Java Build/Output directories
+target/
+bin/
+out/
+build/
+.gradle/
+.settings/
+
+# ------------------------------------------------------------------------------
+# Go Specific (Binaries and Profiles)
+# ------------------------------------------------------------------------------
+# Compiled test binaries
+*.test
+*.test.exe
+
+# Executables
+*.exe
+
+# General Go build output patterns
+/bin/
+/out/
+/dist/
+*.out
+*.prof
+cpu.out
+mem.out
+mprof
+gprof
+*.tlog
+
+# Go Workspace files
+go.work
+go.work.sum
+
+# ------------------------------------------------------------------------------
+# IDEs and Editors
+# ------------------------------------------------------------------------------
+# JetBrains (IntelliJ IDEA, WebStorm, GoLand, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.metadata/
+tmp/
+.classpath
+.project
+.settings/
+
+# Visual Studio Code
+# Ignore workspace-specific user cache, but KEEP project settings and debug configurations
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+# Vim/Emacs/Sublime/Other Text Editors (Temporary / Swap files)
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+.netrwhist
+*~
+*.bak
+*.swp
+*.swo
+
+# ------------------------------------------------------------------------------
+# General / Temporary / Scratch folders
+# ------------------------------------------------------------------------------
+scratch/
+tmp/
+temp/

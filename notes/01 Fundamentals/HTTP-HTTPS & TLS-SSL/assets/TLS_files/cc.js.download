@@ -1,0 +1,1 @@
+if(console){var cookiedomainwarning='Error: The domain ANDREYKA26.COM is not authorized to show the cookie banner for domain group ID 2ac8132d-3976-47d5-a66c-251c31625455. Please add it to the domain group in the Cookiebot Manager to authorize the domain.';if(typeof console.warn === 'function'){console.warn(cookiedomainwarning)}else{console.log(cookiedomainwarning)}};

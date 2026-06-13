@@ -1,0 +1,29 @@
+[Unit]
+Description=myapp process health monitor
+# The monitor checks myapp but does not require it to be running.
+# If myapp is down, the monitor detects and reports that — it doesn't fail silently.
+
+[Service]
+Type=oneshot
+# Run as the same user as the monitored service so /proc/<pid>/fd is accessible.
+# On Linux, /proc/<pid>/fd is readable by the process owner and root.
+User=myapp
+Group=myapp
+
+ExecStart=/opt/myapp/scripts/monitor-myapp.sh
+
+# Load the same environment file as the main service so health URL and
+# thresholds can be configured centrally.
+EnvironmentFile=/etc/myapp/env
+
+# Capture all output to journald.
+# Query with: journalctl -u myapp-monitor.service
+StandardOutput=journal
+StandardError=journal
+
+# Monitor runs should complete quickly. If the health check hangs for 30 seconds,
+# something is seriously wrong — kill the monitor, don't let it pile up.
+TimeoutStartSec=30
+
+[Install]
+WantedBy=multi-user.target

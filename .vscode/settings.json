@@ -1,0 +1,10 @@
+{
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "java.debug.settings.showHex": true,
+    "java.project.referencedLibraries": [
+        "implementation/lib/*.jar"
+    ],
+    "java.project.sourcePaths": [
+        "implementation/**/java"
+    ]
+}

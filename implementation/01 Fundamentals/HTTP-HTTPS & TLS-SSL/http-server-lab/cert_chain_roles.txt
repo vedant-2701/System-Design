@@ -1,0 +1,9 @@
+0 s:CN=*.google.com
+  i:C=US, O=Google Trust Services, CN=WR2
+  v:NotBefore: May 18 18:35:21 2026 GMT; NotAfter: Aug 10 18:35:20 2026 GMT
+1 s:C=US, O=Google Trust Services, CN=WR2
+  i:C=US, O=Google Trust Services LLC, CN=GTS Root R1
+  v:NotBefore: Dec 13 09:00:00 2023 GMT; NotAfter: Feb 20 14:00:00 2029 GMT
+2 s:C=US, O=Google Trust Services LLC, CN=GTS Root R1
+  i:C=BE, O=GlobalSign nv-sa, OU=Root CA, CN=GlobalSign Root CA
+  v:NotBefore: Jun 19 00:00:42 2020 GMT; NotAfter: Jan 28 00:00:42 2028 GMT

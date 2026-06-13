@@ -1,0 +1,182 @@
+Connecting to 192.178.193.100
+depth=2 C=US, O=Google Trust Services LLC, CN=GTS Root R1
+verify return:1
+depth=1 C=US, O=Google Trust Services, CN=WR2
+verify return:1
+depth=0 CN=*.google.com
+verify return:1
+CONNECTED(00000003)
+---
+Certificate chain
+ 0 s:CN=*.google.com
+   i:C=US, O=Google Trust Services, CN=WR2
+   a:PKEY: EC, (prime256v1); sigalg: sha256WithRSAEncryption
+   v:NotBefore: May 18 18:35:21 2026 GMT; NotAfter: Aug 10 18:35:20 2026 GMT
+-----BEGIN CERTIFICATE-----
+MIIIdTCCB12gAwIBAgIRANUqWWhJo86bEGQWm8fr30swDQYJKoZIhvcNAQELBQAw
+OzELMAkGA1UEBhMCVVMxHjAcBgNVBAoTFUdvb2dsZSBUcnVzdCBTZXJ2aWNlczEM
+MAoGA1UEAxMDV1IyMB4XDTI2MDUxODE4MzUyMVoXDTI2MDgxMDE4MzUyMFowFzEV
+MBMGA1UEAwwMKi5nb29nbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE
+rGwQHDlGZHg4bCpvaBQKF07hm4v6puRsRi7O6JQH78GTcBkGAHRZSLqvlH8K+wDB
+OiTKlDh3sWlmEJDUJDdoKKOCBmEwggZdMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUE
+DDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBQu7DS5PpeDw37l
+0PSrVtQlmWd9azAfBgNVHSMEGDAWgBTeGx7teRXUPjckwyG77DQ5bUKyMDBYBggr
+BgEFBQcBAQRMMEowIQYIKwYBBQUHMAGGFWh0dHA6Ly9vLnBraS5nb29nL3dyMjAl
+BggrBgEFBQcwAoYZaHR0cDovL2kucGtpLmdvb2cvd3IyLmNydDCCBDgGA1UdEQSC
+BC8wggQrggwqLmdvb2dsZS5jb22CFiouYXBwZW5naW5lLmdvb2dsZS5jb22CCSou
+YmRuLmRldoIVKi5vcmlnaW4tdGVzdC5iZG4uZGV2ghIqLmNsb3VkLmdvb2dsZS5j
+b22CGCouY3Jvd2Rzb3VyY2UuZ29vZ2xlLmNvbYIYKi5kYXRhY29tcHV0ZS5nb29n
+bGUuY29tggsqLmdvb2dsZS5jYYILKi5nb29nbGUuY2yCDiouZ29vZ2xlLmNvLmlu
+gg4qLmdvb2dsZS5jby5qcIIOKi5nb29nbGUuY28udWuCDyouZ29vZ2xlLmNvbS5h
+coIPKi5nb29nbGUuY29tLmF1gg8qLmdvb2dsZS5jb20uYnKCDyouZ29vZ2xlLmNv
+bS5jb4IPKi5nb29nbGUuY29tLm14gg8qLmdvb2dsZS5jb20udHKCDyouZ29vZ2xl
+LmNvbS52boILKi5nb29nbGUuZGWCCyouZ29vZ2xlLmVzggsqLmdvb2dsZS5mcoIL
+Ki5nb29nbGUuaHWCCyouZ29vZ2xlLml0ggsqLmdvb2dsZS5ubIILKi5nb29nbGUu
+cGyCCyouZ29vZ2xlLnB0ghkqLmdlbWluaS5jbG91ZC5nb29nbGUuY29tgg0qLmdz
+dGF0aWMuY29tghQqLm1ldHJpYy5nc3RhdGljLmNvbYIKKi5ndnQxLmNvbYIRKi5n
+Y3BjZG4uZ3Z0MS5jb22CCiouZ3Z0Mi5jb22CDiouZ2NwLmd2dDIuY29tghAqLnVy
+bC5nb29nbGUuY29tghYqLnlvdXR1YmUtbm9jb29raWUuY29tggsqLnl0aW1nLmNv
+bYIKYWkuYW5kcm9pZIILYW5kcm9pZC5jb22CDSouYW5kcm9pZC5jb22CEyouZmxh
+c2guYW5kcm9pZC5jb22CBGcuY2+CBiouZy5jb4IGZ29vLmdsggp3d3cuZ29vLmds
+ghRnb29nbGUtYW5hbHl0aWNzLmNvbYIWKi5nb29nbGUtYW5hbHl0aWNzLmNvbYIK
+Z29vZ2xlLmNvbYISZ29vZ2xlY29tbWVyY2UuY29tghQqLmdvb2dsZWNvbW1lcmNl
+LmNvbYIKdXJjaGluLmNvbYIMKi51cmNoaW4uY29tggh5b3V0dS5iZYILeW91dHVi
+ZS5jb22CDSoueW91dHViZS5jb22CEW11c2ljLnlvdXR1YmUuY29tghMqLm11c2lj
+LnlvdXR1YmUuY29tghR5b3V0dWJlZWR1Y2F0aW9uLmNvbYIWKi55b3V0dWJlZWR1
+Y2F0aW9uLmNvbYIPeW91dHViZWtpZHMuY29tghEqLnlvdXR1YmVraWRzLmNvbYIF
+eXQuYmWCByoueXQuYmWCGmFuZHJvaWQuY2xpZW50cy5nb29nbGUuY29tghUqLmFp
+c3R1ZGlvLmdvb2dsZS5jb20wEwYDVR0gBAwwCjAIBgZngQwBAgEwNgYDVR0fBC8w
+LTAroCmgJ4YlaHR0cDovL2MucGtpLmdvb2cvd3IyL0dTeVQxTjRQQnJnLmNybDCC
+AQMGCisGAQQB1nkCBAIEgfQEgfEA7wB2AMs49xWJfIShRF9bwd37yW7ymlnNRwpp
+BYWwyxTDFFjnAAABnjyV+/0AAAQDAEcwRQIgCgvqLruYdmtREQIJopZQVZEAux/E
+dciE9ThPK5WLOIwCIQDJjNYSb4sTv+LnXVHnirnD6kTT5FY8gLI6mKR0WI/m1AB1
+ANgJVTuUT3r/yBYZb5RPhauw+Pxeh1UmDxXRLnK7RUsUAAABnjyV+8EAAAQDAEYw
+RAIgQvDSSJRos+D8Lk6bpjH2ZlYxD/N6Gv2TqkFZhUlFKeQCIBq55PPw4e5N89gL
+gzFC2kp1X+YvFsURPsLrz1LqOAymMA0GCSqGSIb3DQEBCwUAA4IBAQBtZusj1ojC
+xhZxk5KpZ92eZuTkDVJgJGtDq8gPRehf50mZiu2gDK1JgXIzKRey3tHmgNrCmTon
+5QJAL9yDyrOGs2GoQsfMkenH0+/hTsLB+n03ni9+9jghfPvE9CZbFimniiqGznhn
+W5mNOZGy2AnXz79ZfHr4J8AuPh4HVvPc6q/2coyl7Vlxp2XDo6j1eoZARVSske22
+WvE34U4Yunq+SE0E0a8aKTV7Q7YHeu8/NAsFmG7V6QSSqAyFyxqeEzuz8ylBPxS/
+cejBk+29tGlfqqrR1JEKdcFLF7EuRyvRWAuQMQBHRA9boa3/lz1f+jEkkUbfqEMr
+DAnxLthdKKJk
+-----END CERTIFICATE-----
+ 1 s:C=US, O=Google Trust Services, CN=WR2
+   i:C=US, O=Google Trust Services LLC, CN=GTS Root R1
+   a:PKEY: RSA, 2048 (bit); sigalg: sha256WithRSAEncryption
+   v:NotBefore: Dec 13 09:00:00 2023 GMT; NotAfter: Feb 20 14:00:00 2029 GMT
+-----BEGIN CERTIFICATE-----
+MIIFCzCCAvOgAwIBAgIQf/AFoHxM3tEArZ1mpRB7mDANBgkqhkiG9w0BAQsFADBH
+MQswCQYDVQQGEwJVUzEiMCAGA1UEChMZR29vZ2xlIFRydXN0IFNlcnZpY2VzIExM
+QzEUMBIGA1UEAxMLR1RTIFJvb3QgUjEwHhcNMjMxMjEzMDkwMDAwWhcNMjkwMjIw
+MTQwMDAwWjA7MQswCQYDVQQGEwJVUzEeMBwGA1UEChMVR29vZ2xlIFRydXN0IFNl
+cnZpY2VzMQwwCgYDVQQDEwNXUjIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQCp/5x/RR5wqFOfytnlDd5GV1d9vI+aWqxG8YSau5HbyfsvAfuSCQAWXqAc
++MGr+XgvSszYhaLYWTwO0xj7sfUkDSbutltkdnwUxy96zqhMt/TZCPzfhyM1IKji
+aeKMTj+xWfpgoh6zySBTGYLKNlNtYE3pAJH8do1cCA8Kwtzxc2vFE24KT3rC8gIc
+LrRjg9ox9i11MLL7q8Ju26nADrn5Z9TDJVd06wW06Y613ijNzHoU5HEDy01hLmFX
+xRmpC5iEGuh5KdmyjS//V2pm4M6rlagplmNwEmceOuHbsCFx13ye/aoXbv4r+zgX
+FNFmp6+atXDMyGOBOozAKql2N87jAgMBAAGjgf4wgfswDgYDVR0PAQH/BAQDAgGG
+MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBTeGx7teRXUPjckwyG77DQ5bUKyMDAfBgNVHSMEGDAWgBTk
+rysmcRorSCeFL1JmLO/wiRNxPjA0BggrBgEFBQcBAQQoMCYwJAYIKwYBBQUHMAKG
+GGh0dHA6Ly9pLnBraS5nb29nL3IxLmNydDArBgNVHR8EJDAiMCCgHqAchhpodHRw
+Oi8vYy5wa2kuZ29vZy9yL3IxLmNybDATBgNVHSAEDDAKMAgGBmeBDAECATANBgkq
+hkiG9w0BAQsFAAOCAgEARXWL5R87RBOWGqtY8TXJbz3S0DNKhjO6V1FP7sQ02hYS
+TL8Tnw3UVOlIecAwPJQl8hr0ujKUtjNyC4XuCRElNJThb0Lbgpt7fyqaqf9/qdLe
+SiDLs/sDA7j4BwXaWZIvGEaYzq9yviQmsR4ATb0IrZNBRAq7x9UBhb+TV+PfdBJT
+DhEl05vc3ssnbrPCuTNiOcLgNeFbpwkuGcuRKnZc8d/KI4RApW//mkHgte8y0YWu
+ryUJ8GLFbsLIbjL9uNrizkqRSvOFVU6xddZIMy9vhNkSXJ/UcZhjJY1pXAprffJB
+vei7j+Qi151lRehMCofa6WBmiA4fx+FOVsV2/7R6V2nyAiIJJkEd2nSi5SnzxJrl
+Xdaqev3htytmOPvoKWa676ATL/hzfvDaQBEcXd2Ppvy+275W+DKcH0FBbX62xevG
+iza3F4ydzxl6NJ8hk8R+dDXSqv1MbRT1ybB5W0k8878XSOjvmiYTDIfyc9acxVJr
+Y/cykHipa+te1pOhv7wYPYtZ9orGBV5SGOJm4NrB3K1aJar0RfzxC3ikr7Dyc6Qw
+qDTBU39CluVIQeuQRgwG3MuSxl7zRERDRilGoKb8uY45JzmxWuKxrfwT/478JuHU
+/oTxUFqOl2stKnn7QGTq8z29W+GgBLCXSBxC9epaHM0myFH/FJlniXJfHeytWt0=
+-----END CERTIFICATE-----
+ 2 s:C=US, O=Google Trust Services LLC, CN=GTS Root R1
+   i:C=BE, O=GlobalSign nv-sa, OU=Root CA, CN=GlobalSign Root CA
+   a:PKEY: RSA, 4096 (bit); sigalg: sha256WithRSAEncryption
+   v:NotBefore: Jun 19 00:00:42 2020 GMT; NotAfter: Jan 28 00:00:42 2028 GMT
+-----BEGIN CERTIFICATE-----
+MIIFYjCCBEqgAwIBAgIQd70NbNs2+RrqIQ/E8FjTDTANBgkqhkiG9w0BAQsFADBX
+MQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEQMA4GA1UE
+CxMHUm9vdCBDQTEbMBkGA1UEAxMSR2xvYmFsU2lnbiBSb290IENBMB4XDTIwMDYx
+OTAwMDA0MloXDTI4MDEyODAwMDA0MlowRzELMAkGA1UEBhMCVVMxIjAgBgNVBAoT
+GUdvb2dsZSBUcnVzdCBTZXJ2aWNlcyBMTEMxFDASBgNVBAMTC0dUUyBSb290IFIx
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAthECix7joXebO9y/lD63
+ladAPKH9gvl9MgaCcfb2jH/76Nu8ai6Xl6OMS/kr9rH5zoQdsfnFl97vufKj6bwS
+iV6nqlKr+CMny6SxnGPb15l+8Ape62im9MZaRw1NEDPjTrETo8gYbEvs/AmQ351k
+KSUjB6G00j0uYODP0gmHu81I8E3CwnqIiru6z1kZ1q+PsAewnjHxgsHA3y6mbWwZ
+DrXYfiYaRQM9sHmklCitD38m5agI/pboPGiUU+6DOogrFZYJsuB6jC511pzrp1Zk
+j5ZPaK49l8KEj8C8QMALXL32h7M1bKwYUH+E4EzNktMg6TO8UpmvMrUpsyUqtEj5
+cuHKZPfmghCN6J3Cioj6OGaK/GP5Afl4/Xtcd/p2h/rs37EOeZVXtL0m79YB0esW
+CruOC7XFxYpVq9Os6pFLKcwZpDIlTirxZUTQAs6qzkm06p98g7BAe+dDq6dso499
+iYH6TKX/1Y7DzkvgtdizjkXPdsDtQCv9Uw+wp9U7DbGKogPeMa3Md+pvez7W35Ei
+Eua++tgy/BBjFFFy3l3WFpO9KWgz7zpm7AeKJt8T11dleCfeXkkUAKIAf5qoIbap
+sZWwpbkNFhHax2xIPEDgfg1azVY80ZcFuctL7TlLnMQ/0lUTbiSw1nH69MG6zO0b
+9f6BQdgAmD06yK56mDcYBZUCAwEAAaOCATgwggE0MA4GA1UdDwEB/wQEAwIBhjAP
+BgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTkrysmcRorSCeFL1JmLO/wiRNxPjAf
+BgNVHSMEGDAWgBRge2YaRQ2XyolQL30EzTSo//z9SzBgBggrBgEFBQcBAQRUMFIw
+JQYIKwYBBQUHMAGGGWh0dHA6Ly9vY3NwLnBraS5nb29nL2dzcjEwKQYIKwYBBQUH
+MAKGHWh0dHA6Ly9wa2kuZ29vZy9nc3IxL2dzcjEuY3J0MDIGA1UdHwQrMCkwJ6Al
+oCOGIWh0dHA6Ly9jcmwucGtpLmdvb2cvZ3NyMS9nc3IxLmNybDA7BgNVHSAENDAy
+MAgGBmeBDAECATAIBgZngQwBAgIwDQYLKwYBBAHWeQIFAwIwDQYLKwYBBAHWeQIF
+AwMwDQYJKoZIhvcNAQELBQADggEBADSkHrEoo9C0dhemMXoh6dFSPsjbdBZBiLg9
+NR3t5P+T4Vxfq7vqfM/b5A3Ri1fyJm9bvhdGaJQ3b2t6yMAYN/olUazsaL+yyEn9
+WprKASOshIArAoyZl+tJaox118fessmXn1hIVw41oeQa1v1vg4Fv74zPl6/AhSrw
+9U5pCZEt4Wi4wStz6dTZ/CLANx8LZh1J7QJVj2fhMtfTJr9w4z30Z209fOU0iOMy
++qduBmpvvYuR7hZL6Dupszfnw0Skfths18dG9ZKb59UhvmaSGZRVbNQpsg3BZlvi
+d0lIKO2d1xozclOzgjXPYovJJIultzkMu34qQb9Sz/yilrbCgj8=
+-----END CERTIFICATE-----
+---
+Server certificate
+subject=CN=*.google.com
+issuer=C=US, O=Google Trust Services, CN=WR2
+---
+No client certificate CA names sent
+Peer signing digest: SHA256
+Peer signature type: ecdsa_secp256r1_sha256
+Peer Temp Key: X25519, 253 bits
+---
+SSL handshake has read 5350 bytes and written 307 bytes
+Verification: OK
+---
+New, TLSv1.2, Cipher is ECDHE-ECDSA-CHACHA20-POLY1305
+Protocol: TLSv1.2
+Server public key is 256 bit
+Secure Renegotiation IS supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+SSL-Session:
+    Protocol  : TLSv1.2
+    Cipher    : ECDHE-ECDSA-CHACHA20-POLY1305
+    Session-ID: 39B3DDABE9768801A89859E3867505F53B10F77CCB5D43A13444A02D0E3EAD1B
+    Session-ID-ctx: 
+    Master-Key: AAA35820C58408B1446018CF8893C2D3ECEA654948D228ED5D03835F20894DFA395C5D4306E667087F97A36DB152434D
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    TLS session ticket lifetime hint: 100800 (seconds)
+    TLS session ticket:
+    0000 - 02 a5 6f 4a 01 14 72 62-a8 d4 40 c8 cb 3e 43 10   ..oJ..rb..@..>C.
+    0010 - 04 99 c2 29 c1 72 85 f0-54 d7 f2 9a dd 43 78 82   ...).r..T....Cx.
+    0020 - b9 82 3c 57 30 5c cc 88-0d b0 63 e6 39 52 e0 14   ..<W0\....c.9R..
+    0030 - 15 9c 6e 0e 53 77 68 49-2c 28 c1 2c 68 b8 87 0d   ..n.SwhI,(.,h...
+    0040 - ee d6 93 91 66 a9 93 eb-d9 30 83 e8 6f bf 6c 90   ....f....0..o.l.
+    0050 - 8a f9 bf b7 8c 19 b5 0a-79 df 1c ee 16 1a 5e 72   ........y.....^r
+    0060 - 84 3d f5 84 27 a3 0a 1e-0d a3 80 39 d5 db eb c1   .=..'......9....
+    0070 - d7 80 38 1d df 5f 9a e7-09 f1 af 20 7f d2 b4 10   ..8.._..... ....
+    0080 - 29 f0 c6 88 28 d2 e1 ac-cd bf fa 02 d6 fc aa 12   )...(...........
+    0090 - 16 fb 10 6f ed 4c 58 0e-15 bd 09 40 f8 e9 d5 aa   ...o.LX....@....
+    00a0 - 3e cf 14 c0 0e 5e af 76-c7 a8 aa df fd 0e 86 89   >....^.v........
+    00b0 - 2b 2a db 9c 81 f9 10 96-db dd cd 87 f8 c6 b7 18   +*..............
+    00c0 - bc 5d 5b 56 cf db d4 90-71 a3 f9 0b 50 c6 79 57   .][V....q...P.yW
+    00d0 - 82 01 10 a5 ed ed 24 20-ef de 42 4f 4d 38 53 f2   ......$ ..BOM8S.
+    00e0 - 66 36 0d 2e e2                                    f6...
+
+    Start Time: 1781153678
+    Timeout   : 7200 (sec)
+    Verify return code: 0 (ok)
+    Extended master secret: yes
+---

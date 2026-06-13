@@ -1,0 +1,63 @@
+# /etc/logrotate.d/myapp
+#
+# Rotates /var/log/myapp/myapp.log daily.
+# Keeps 30 days of compressed history.
+#
+# Why daily and not weekly?
+# Backend service logs grow fast under load. Weekly rotation risks /var filling
+# before rotation kicks in during a high-traffic period.
+#
+# Why 30 days?
+# Enough for post-mortem analysis of slow-burn issues (memory leaks, gradual
+# FD exhaustion) that take days to manifest. Adjust based on disk budget.
+
+/var/log/myapp/myapp.log {
+    daily
+    rotate 30
+    compress
+
+    # Don't compress the most recently rotated file.
+    # Rationale: if the service crashes right after rotation, the still-open
+    # FD may still point to the just-rotated file. Compressing it while writes
+    # could still arrive corrupts the gzip stream.
+    delaycompress
+
+    # Don't fail if the log file is missing — service may not have started yet.
+    missingok
+
+    # Don't rotate empty log files — avoids creating empty .gz files.
+    notifempty
+
+    # Create new log file with correct ownership after rotation.
+    # Without this, the new file is created by logrotate as root.
+    # The service (running as myapp user) can't write to it — silent log loss.
+    create 0644 myapp myapp
+
+    # After rotation, send SIGHUP to the service so it closes the old FD
+    # and opens the new log file.
+    #
+    # Without postrotate:
+    #   - Service still holds FD to the rotated (renamed) file
+    #   - Writes continue to the old file
+    #   - New log file stays empty
+    #   - Monitoring sees no log activity and raises false alerts
+    #   - Space is not freed because the FD is still open
+    postrotate
+        # systemctl reload sends SIGHUP to the main process.
+        # --quiet suppresses output if service is stopped.
+        systemctl reload myapp.service --quiet 2>/dev/null || true
+    endscript
+}
+
+# Monitor alert log rotated weekly with shorter retention.
+# It's append-only structured text — useful for incident timeline reconstruction
+# but doesn't need 30 days of history.
+/var/log/myapp/monitor-alerts.log {
+    weekly
+    rotate 8
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0644 myapp myapp
+}

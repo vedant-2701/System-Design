@@ -1,0 +1,21 @@
+[Unit]
+Description=Run myapp process health monitor every minute
+# Ensure the main service unit is known before the timer starts.
+# This does NOT mean myapp must be running — it means the unit file must exist.
+After=myapp.service
+
+[Timer]
+# Run every 60 seconds after the timer itself starts.
+OnBootSec=30s
+OnUnitActiveSec=60s
+
+# If the system was down when the timer should have fired (e.g. server rebooted),
+# run the missed job immediately on next boot.
+# This is the key advantage over cron — cron silently skips missed runs.
+Persistent=true
+
+# Which service unit to activate when the timer fires.
+Unit=myapp-monitor.service
+
+[Install]
+WantedBy=timers.target
