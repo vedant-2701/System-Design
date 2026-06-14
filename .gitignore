@@ -55,6 +55,10 @@ $RECYCLE.BIN/
 
 # EXCLUDE the reference libraries we want to track in Git
 !implementation/lib/*.jar
+!**/maven-wrapper.jar
+
+# Maven timing files (transient)
+.mvn/timing.properties
 
 # Virtual VM Crash Logs
 hs_err_pid*.log

@@ -76,14 +76,14 @@
 - [I] HTTP Caching Headers (ETag, Cache-Control)
 
 ### gRPC
-- [ ] Protocol Buffers (protobuf)
-- [ ] Service Definition (.proto files)
-- [ ] Unary vs Streaming RPCs
-- [ ] gRPC vs REST Tradeoffs
-- [ ] Interceptors
-- [ ] Load Balancing with gRPC
-- [ ] Health Checks
-- [ ] gRPC-Gateway
+- [R] Protocol Buffers (protobuf)
+- [R] Service Definition (.proto files)
+- [R] Unary vs Streaming RPCs
+- [R] gRPC vs REST Tradeoffs
+- [R] Interceptors
+- [R] Load Balancing with gRPC
+- [R] Health Checks
+- [R] gRPC-Gateway
 
 ### WebSockets
 - [ ] WebSocket Handshake (HTTP Upgrade)

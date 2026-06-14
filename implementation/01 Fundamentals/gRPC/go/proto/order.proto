@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "grpc-demo/gen/order";
+
+import "google/protobuf/timestamp.proto";
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum OrderStatus {
+  ORDER_STATUS_UNKNOWN  = 0;  // default; must always be zero in proto3
+  ORDER_STATUS_PENDING  = 1;
+  ORDER_STATUS_CONFIRMED = 2;
+  ORDER_STATUS_SHIPPED  = 3;
+  ORDER_STATUS_DELIVERED = 4;
+  ORDER_STATUS_CANCELLED = 5;
+}
+
+// ─── Domain Messages ─────────────────────────────────────────────────────────
+
+message Item {
+  string name     = 1;
+  uint32 quantity = 2;
+  uint32 price_cents = 3;  // price in cents to avoid float precision issues
+}
+
+message Order {
+  uint32      order_id   = 1;
+  repeated Item items    = 2;
+  OrderStatus status     = 3;
+  google.protobuf.Timestamp created_at = 4;
+  uint32      total_cents = 5;
+
+  // Field 6 was user_name — retired. Never reuse this number.
+  reserved 6;
+  reserved "user_name";
+}
+
+// ─── Request / Response Messages ─────────────────────────────────────────────
+
+message GetOrderRequest {
+  uint32 order_id = 1;
+}
+
+message CreateOrderRequest {
+  repeated Item items = 1;
+}
+
+message CreateOrderResponse {
+  uint32 order_id    = 1;
+  uint32 total_cents = 2;
+  google.protobuf.Timestamp created_at = 3;
+}
+
+message WatchOrdersRequest {
+  // Empty: watch all orders.
+  // In production you'd filter by user_id or status.
+}
+
+message OrderEvent {
+  uint32      order_id  = 1;
+  OrderStatus old_status = 2;
+  OrderStatus new_status = 3;
+  google.protobuf.Timestamp occurred_at = 4;
+}
+
+// ─── Health Check (standard gRPC health protocol) ────────────────────────────
+// Normally imported from google.golang.org/grpc/health/grpc_health_v1
+// Shown here for educational completeness — in practice use the standard import.
+
+// ─── Service Definition ───────────────────────────────────────────────────────
+
+service OrderService {
+  // Unary: fetch a single order by ID
+  rpc GetOrder (GetOrderRequest) returns (Order);
+
+  // Unary: create a new order
+  rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+
+  // Server streaming: client subscribes once, server pushes events continuously
+  rpc WatchOrders (WatchOrdersRequest) returns (stream OrderEvent);
+}
